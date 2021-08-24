@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ImageHelper from "./helper/ImageHelper";
 import { Redirect } from 'react-router-dom';
 
-import { addItemToCart, removeItemFromCart, checkItemInCart } from "./helper/cartHelper";
+import { addItemToCart, checkItemInCart, removeItemFromCart } from "./helper/cartHelper";
 
 const isAuthenticated = true;
 
@@ -11,17 +11,20 @@ const Card = (props) => {
         currency = "₹",
         product,
         addedToCart = checkItemInCart(product),
+        refreshParent = () => {}
     } = props;
 
     const cardTitle = product ? product.name : "Card Title";
     const cardDescription = product ? product.description : "Card Description";
 
     const [showAddToCart, setShowAddToCart] = useState(!addedToCart);
+    const [showRemoveItemFromCart, setShowRemoveItemFromCart] = useState(addedToCart);
     const addToCartHandler = () => {
         if (isAuthenticated) {
-            setShowAddToCart(false)
-                addItemToCart(product, () => { });
-                console.log('Added to Cart')
+            setShowAddToCart(false);
+            setShowRemoveItemFromCart(true);
+            addItemToCart(product, () => { });
+            console.log('Added to Cart')
         } else {
             console.log("Login Please");
         }
@@ -30,8 +33,10 @@ const Card = (props) => {
     const removeFromCartHandler = () => {
         if (isAuthenticated) {
             setShowAddToCart(true)
-                removeItemFromCart(product, () => { });
-                console.log('Removed from Cart')
+            setShowRemoveItemFromCart(false);
+            removeItemFromCart(product, () => { });
+            console.log('Removed from Cart');
+            refreshParent();
         } else {
             console.log("Login Please");
         }
@@ -53,17 +58,20 @@ const Card = (props) => {
                 <p className="btn btn-success rounded btn-sm px-4">{currency} {product.price}</p>
                 <div className="row">
                     {
-                        showAddToCart ?
-                            <div className="col-12">
-                                <button className="btn-sm btn btn-outline-success w-100 my-2" onClick={() => { addToCartHandler() }}>
-                                    Add to Cart
-                                </button>
-                            </div> :
-                            <div className="col-12">
-                                <button className="btn-sm btn btn-outline-danger my-2 w-100" onClick={() => { removeFromCartHandler() }}>
-                                    Remove from Cart
-                                </button>
-                            </div>
+                        showAddToCart &&
+                        <div className="col-12">
+                            <button className="btn-sm btn btn-outline-success w-100 my-2" onClick={() => { addToCartHandler() }}>
+                                Add to Cart
+                            </button>
+                        </div>
+                    }
+                    {
+                        showRemoveItemFromCart &&
+                        <div className="col-12">
+                            <button className="btn-sm btn btn-outline-danger my-2 w-100" onClick={() => { removeFromCartHandler() }}>
+                                Remove from Cart
+                            </button>
+                        </div>
                     }
                 </div>
             </div>
