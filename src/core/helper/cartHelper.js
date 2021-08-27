@@ -63,7 +63,7 @@ export const getItemsFromCart = () => {
     }
 }
 
-export const emptyCart = (next) => {
+export const emptyCart = (next = () => {}) => {
     if (typeof window !== undefined) {
         let localCart = localStorage.getItem("cart");
         if (localCart) {

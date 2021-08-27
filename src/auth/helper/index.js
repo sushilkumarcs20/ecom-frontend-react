@@ -44,7 +44,7 @@ export const isAuthenticated = async () => {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
-                        return true;
+                        return {token, user};
                     }
                     console.log(data);
                     return false;
@@ -59,19 +59,40 @@ export const isAuthenticated = async () => {
     return false;
 }
 
-export const signout = next => {
-    const userAuth = isAuthenticated();
-    const userId = userAuth && userAuth.user.id;
+export const isLocallyAuthenticated = (next = () => {}) => {
     if (typeof window !== undefined) {
-        localStorage.removeItem("jwt");
-        emptyCart(() => { console.log("User Cart Cleared") });
-        next();
-
-        return fetch(`${API}user/logout/${userId}`)
-            .then((response) => {
-                next();
-                return response.json()
-            })
-            .catch((error) => console.log(error))
+        const token = JSON.parse(localStorage.getItem("jwt"));
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (token && user.id) {
+            return user;
+        }
+        return false;
     }
+    return false;
+}
+
+export const signout = (next = () => { }) => {
+    const userAuth = isAuthenticated();
+    userAuth.then((result) => {
+        if (!result) {
+            next();
+            return true;
+        }
+        const userId = JSON.parse(localStorage.getItem("user")).id;
+        if (typeof window !== undefined) {
+            return fetch(`${API}user/logout/${userId}`)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((result) => {
+                    if (result.success) {
+                        localStorage.removeItem("jwt");
+                        localStorage.removeItem("user");
+                        emptyCart(() => { console.log("User Cart Cleared") });
+                        next()
+                    }
+                })
+                .catch((error) => console.log(error))
+        }
+    })
 }

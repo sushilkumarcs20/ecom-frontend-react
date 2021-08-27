@@ -3,7 +3,9 @@ import ImageHelper from "./helper/ImageHelper";
 import { Redirect } from 'react-router-dom';
 
 import { addItemToCart, checkItemInCart, removeItemFromCart } from "./helper/cartHelper";
+import { isLocallyAuthenticated } from "../auth/helper";
 
+// const isAuthenticated = isLocallyAuthenticated();
 const isAuthenticated = true;
 
 const Card = (props) => {
@@ -11,7 +13,7 @@ const Card = (props) => {
         currency = "₹",
         product,
         addedToCart = checkItemInCart(product),
-        refreshParent = () => {}
+        refreshParent = () => { }
     } = props;
 
     const cardTitle = product ? product.name : "Card Title";
