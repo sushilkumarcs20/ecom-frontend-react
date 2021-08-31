@@ -89,7 +89,7 @@ export const signout = (next = () => { }) => {
                         localStorage.removeItem("jwt");
                         localStorage.removeItem("user");
                         emptyCart(() => { console.log("User Cart Cleared") });
-                        next()
+                        next();
                     }
                 })
                 .catch((error) => console.log(error))

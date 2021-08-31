@@ -1,0 +1,8 @@
+.home-banner {
+    border-radius: .25rem;
+}
+
+.home-banner:hover {
+    box-shadow: 0px 0px 5px 5px rgb(106, 121, 128);
+    transform: scale3d(1.01, 1.01, 1.1);
+}

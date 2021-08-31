@@ -6,18 +6,25 @@ import Home from "./core/Home";
 import Signin from "./user/Signin";
 import Signup from "./user/Signup";
 import UserDashboard from "./user/UserDashboard";
+import { CartProvider } from "./core/helper/cartHelper";
+import Menu from "./core/Menu";
 
 const Routes = () => {
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/cart" component={Cart} />
-                <Route exact path="/signup" component={Signup} />
-                <Route exact path="/signin" component={Signin} />
-                <PrivateRoutes exact path="/user/dashboard" component={UserDashboard} />
-            </Switch>
-        </Router>
+        <>
+            <Router>
+                <Switch>
+                    <CartProvider>
+                        {/* <Menu /> */}
+                        <Route exact path="/" component={Home} />
+                        <Route exact path="/cart" component={Cart} />
+                        <Route exact path="/signup" component={Signup} />
+                        <Route exact path="/signin" component={Signin} />
+                        <PrivateRoutes exact path="/user/dashboard" component={UserDashboard} />
+                    </CartProvider>
+                </Switch>
+            </Router>
+        </>
     )
 }
 

@@ -22,7 +22,7 @@ const Cart = (props) => {
                         products.map((product) => {
                             return checkItemInCart(product) ? (
                                 <div key={product.id} className="col-lg-6 col mb-4">
-                                    <Card addedToCart={true} refreshParent={() => loadAllProducts()} product={product} />
+                                    <Card isThisCart={true} addedToCart={true} refreshParent={() => loadAllProducts()} product={product} />
                                 </div>
                             ) : null;
                         }) :
@@ -38,7 +38,7 @@ const Cart = (props) => {
                 <h1 className="container-fluid text-center">Checkout</h1>
                 {products.length > 0 ?
                     (
-                        <PaymentB products={products} refreshParent={(msg) => {loadAllProducts(); alert(msg)}} />
+                        <PaymentB products={products} refreshParent={(msg) => { loadAllProducts(); alert(msg) }} />
                     ) :
                     (
                         <h5 className="container-fluid text-warning text-center">Please add items to cart.</h5>
@@ -54,11 +54,13 @@ const Cart = (props) => {
         <Base title="Your Cart" description="All the items you added are here">
             <div className="row">
                 <h1 className="col mb-5 text-white-50">Cart Component</h1>
-                <div className="col">
-                    <div style={{ float: "right" }}>
-                        <button onClick={() => { emptyCart(() => { }); setProducts([]) }} className="btn btn-danger">Empty Cart</button>
+                {products.length > 0 &&
+                    <div className="col">
+                        <div style={{ float: "right" }}>
+                            <button onClick={() => { emptyCart(() => { }); setProducts([]) }} className="btn btn-danger">Empty Cart</button>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
             <div className="row">
                 <div className="col-6">

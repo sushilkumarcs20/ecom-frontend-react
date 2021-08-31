@@ -10,8 +10,9 @@ const Base = (props) => {
     } = props;
     return (
         <>
+            {/* can even add this menu in router so that it won't re-render again and again */}
             <Menu />
-            <div className="container-fluid">
+            <div className="">
                 <div className="py-3 jumbotron bg-dark text-white text-center">
                     <h2 className="display-5">{title}</h2>
                     <p className="lead">{description}</p>
@@ -24,7 +25,7 @@ const Base = (props) => {
                     <button className="btn btn-warning btn-lg">Contact Us</button>
                     <div className="container">
                         <span className="text-black-50">
-                            An Amazing Django React FullStack App
+                            App by - Sushil Kumar
                         </span>
                     </div>
                 </div>
