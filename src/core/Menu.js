@@ -15,9 +15,9 @@ const currentTab = (history, path) => {
 }
 
 const Menu = ({ history, path }) => {
-    const {cartState} = useCart();
+    const { cartState } = useCart();
     const [user, setUser] = useState({ logged: false, data: {} })
-    
+
     useEffect(() => {
         const getUser = isLocallyAuthenticated();
         if (getUser) {
@@ -38,11 +38,18 @@ const Menu = ({ history, path }) => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             {user.logged &&
-                                <li className="nav-item">
-                                    <Link aria-current={currentTab(history, "/user/dashboard")} to="/user/dashboard" className={currentTab(history, "/user/dashboard") ? `active nav-link` : 'nav-link'}>
-                                        Dashboard
-                                    </Link>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <Link aria-current={currentTab(history, "/user/dashboard")} to="/user/dashboard" className={currentTab(history, "/user/dashboard") ? `active nav-link` : 'nav-link'}>
+                                            Dashboard
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link aria-current={currentTab(history, "/user/orders")} to="/user/orders" className={currentTab(history, "/user/orders") ? `active nav-link` : 'nav-link'}>
+                                            Orders
+                                        </Link>
+                                    </li>
+                                </>
                             }
                         </ul>
                         <ul className="navbar-nav ml-lg-auto mb-2 mb-lg-0">

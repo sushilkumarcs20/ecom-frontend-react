@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Base from "./../core/Base";
-import { Link } from "react-router-dom";
-import { signup } from '../auth/helper';
+import { Link, Redirect } from "react-router-dom";
+import { isLocallyAuthenticated, signup } from '../auth/helper';
 
 const Signup = () => {
     const [values, setValues] = useState({
@@ -99,14 +99,20 @@ const Signup = () => {
     }
 
     return (
-        <Base title="Sign Up Page" description="A Sign up for Tshirt Store">
-            {success && successMessage()}
-            {error && errorMessage()}
-            {signUpForm()}
-            <p className="text-white text-center">
-                {JSON.stringify(values)}
-            </p>
-        </Base>
+        <>
+            {
+                isLocallyAuthenticated() &&
+                <Redirect to="/" />
+            }
+            <Base title="Sign Up Page" description="A Sign up for Tshirt Store">
+                {success && successMessage()}
+                {error && errorMessage()}
+                {signUpForm()}
+                <p className="text-white text-center">
+                    {JSON.stringify(values)}
+                </p>
+            </Base>
+        </>
     )
 }
 

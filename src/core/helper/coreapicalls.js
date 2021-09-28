@@ -6,3 +6,10 @@ export const getProducts = () => {
             return response.json();
         })
 }
+
+export const getOrders = () => {
+    return fetch(`${API}order/`, { method: 'GET' })
+        .then(response => {
+            return response.json();
+        })
+}

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Base from "./Base";
 import '../styles.css';
 import Card from './Card';
-import { getItemsFromCart, checkItemInCart, emptyCart } from "./helper/cartHelper";
+import { getItemsFromCart, checkItemInCart, emptyCart, useCart } from "./helper/cartHelper";
 import PaymentB from './PaymentB';
 
 const Cart = (props) => {
+    const { cartDispatch } = useCart();
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(false);
 
@@ -38,7 +39,7 @@ const Cart = (props) => {
                 <h1 className="container-fluid text-center">Checkout</h1>
                 {products.length > 0 ?
                     (
-                        <PaymentB products={products} refreshParent={(msg) => { loadAllProducts(); alert(msg) }} />
+                        <PaymentB products={products} refreshParent={(msg) => { loadAllProducts(); alert(msg); cartDispatch({ type: 'refreshCartData' }); }} />
                     ) :
                     (
                         <h5 className="container-fluid text-warning text-center">Please add items to cart.</h5>

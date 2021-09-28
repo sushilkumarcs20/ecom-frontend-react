@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Base from "./../core/Base";
-import { authenticate, signin } from "../auth/helper"
+import { authenticate, signin, isLocallyAuthenticated } from "../auth/helper"
 import { Redirect } from 'react-router-dom';
 
 const Signin = () => {
@@ -33,7 +33,7 @@ const Signin = () => {
                         error: "",
                         success: true,
                     });
-                    data.token && authenticate({token: data.token, user: data.user});
+                    data.token && authenticate({ token: data.token, user: data.user });
                 } else {
                     setValues({
                         ...values,
@@ -87,17 +87,23 @@ const Signin = () => {
     }
 
     return (
-        <Base title="Sign In Page" description="A Sign in for Tshirt Store">
-            {error && errorMessage()}
-            {signInForm()}
-            <p className="text-white text-center">
-                {JSON.stringify(values)}
-            </p>
+        <>
             {
-                success &&
-                performRedirect()
+                isLocallyAuthenticated() &&
+                <Redirect to="/" />
             }
-        </Base>
+            <Base title="Sign In Page" description="A Sign in for Tshirt Store">
+                {error && errorMessage()}
+                {signInForm()}
+                <p className="text-white text-center">
+                    {JSON.stringify(values)}
+                </p>
+                {
+                    success &&
+                    performRedirect()
+                }
+            </Base>
+        </>
     )
 }
 
